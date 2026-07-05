@@ -1,0 +1,36 @@
+
+<!DOCTYPE html><html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AU LE</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f2ee;padding:16px}
+.card{background:#fff;border-radius:12px;padding:12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+button{width:42px;height:42px;font-size:24px}
+.count{font-size:22px;padding:0 12px}
+#total{font-size:24px;font-weight:bold}
+</style></head><body>
+<h2>☕ AU LE</h2><div id="list"></div>
+<div class="card"><div id="total">Doanh thu: 0đ</div></div>
+<button onclick="resetDay()" style="width:100%">🔄 Reset ngày mới</button>
+<script>
+const items=[
+["Cà phê đen",15000],["Cà phê sữa",17000],["Cà phê muối",18000],
+["Bạc xỉu",20000],["Bạc xỉu muối",22000],["Sữa chua đá",22000]];
+let c=JSON.parse(localStorage.getItem("counts")||"[0,0,0,0,0,0]");
+function save(){localStorage.setItem("counts",JSON.stringify(c))}
+function draw(){
+let h="",t=0;
+items.forEach((it,i)=>{
+t+=it[1]*c[i];
+h+=`<div class='card'><div><b>${it[0]}</b><br>${it[1].toLocaleString()}đ</div>
+<div><button onclick='chg(${i},-1)'>-</button><span class='count'>${c[i]}</span>
+<button onclick='chg(${i},1)'>+</button></div></div>`;
+});
+document.getElementById("list").innerHTML=h;
+document.getElementById("total").innerHTML="💰 Doanh thu: "+t.toLocaleString()+"đ";
+save();
+}
+function chg(i,d){c[i]=Math.max(0,c[i]+d);draw();}
+function resetDay(){if(confirm("Reset?")){c=[0,0,0,0,0,0];draw();}}
+draw();
+</script></body></html>
